@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MMTip.Shop — Premium Football Tips</title>
+<meta name="description" content="Myanmar's #1 Premium Football Tips. Expert predictions, daily analysis, guaranteed value."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=Noto+Sans+Myanmar:wght@400;700&display=swap" rel="stylesheet"/>
+
+<style>
+/* ─── RESET & BASE ─────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gold:#c9a84c;
+  --gold-light:#e8c96a;
+  --gold-pale:#f5e9c4;
+  --dark:#080c10;
+  --dark2:#0e1319;
+  --dark3:#141b24;
+  --dark4:#1c2535;
+  --slate:#2a3548;
+  --text:#e8dfc8;
+  --text-dim:#8a8070;
+  --text-muted:#4a4438;
+  --white:#fdfaf4;
+  --green:#1db954;
+  --red:#e53e3e;
+  --font-display:'Cormorant Garamond',serif;
+  --font-body:'DM Sans',sans-serif;
+  --font-mm:'Noto Sans Myanmar',sans-serif;
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  background:var(--dark);
+  color:var(--text);
+  font-family:var(--font-body);
+  font-weight:400;
+  line-height:1.6;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ─── CUSTOM CURSOR ─────────────────────────────────── */
+.cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform .15s ease,opacity .15s ease;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  position:fixed;width:36px;height:36px;
+  border:1px solid rgba(201,168,76,0.5);
+  border-radius:50%;pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all .25s cubic-bezier(.25,.46,.45,.94);
+}
+body:hover .cursor{opacity:1}
+
+/* ─── SCROLLBAR ─────────────────────────────────────── */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--dark)}
+::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px}
+
+/* ─── NOISE OVERLAY ─────────────────────────────────── */
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity:.4;pointer-events:none;z-index:1;
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:1000;
+  padding:1.25rem 3rem;
+  display:flex;align-items:center;justify-content:space-between;
+  transition:all .4s ease;
+}
+nav.scrolled{
+  background:rgba(8,12,16,.92);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(201,168,76,.12);
+  padding:.9rem 3rem;
+}
+.nav-logo{
+  font-family:var(--font-display);
+  font-size:1.6rem;font-weight:700;
+  color:var(--gold);letter-spacing:.02em;
+  text-decoration:none;
+}
+.nav-logo span{color:var(--white);font-weight:400}
+.nav-links{display:flex;gap:2.5rem;list-style:none;align-items:center}
+.nav-links a{
+  color:var(--text-dim);font-size:.85rem;font-weight:500;
+  text-decoration:none;letter-spacing:.08em;text-transform:uppercase;
+  transition:color .2s ease;position:relative;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:-4px;left:0;right:0;
+  height:1px;background:var(--gold);
+  transform:scaleX(0);transform-origin:right;
+  transition:transform .3s ease;
+}
+.nav-links a:hover{color:var(--gold)}
+.nav-links a:hover::after{transform:scaleX(1);transform-origin:left}
+.nav-cta{
+  background:var(--gold);color:var(--dark)!important;
+  padding:.55rem 1.5rem;border-radius:2px;
+  font-weight:600!important;letter-spacing:.06em!important;
+  transition:background .2s,transform .2s!important;
+}
+.nav-cta:hover{background:var(--gold-light);transform:translateY(-1px)}
+.nav-cta::after{display:none!important}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:none;background:none;border:none;padding:4px}
+.hamburger span{display:block;width:24px;height:1px;background:var(--gold);transition:all .3s}
+.mobile-menu{
+  display:none;position:fixed;inset:0;background:var(--dark2);z-index:999;
+  flex-direction:column;align-items:center;justify-content:center;gap:2.5rem;
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:2rem;font-family:var(--font-display);color:var(--text);text-decoration:none}
+.mobile-menu a:hover{color:var(--gold)}
+
+/* ─── PAGES ─────────────────────────────────────────── */
+.page{display:none;min-height:100vh}
+.page.active{display:block}
+
+/* ─── HOME ──────────────────────────────────────────── */
+.hero{
+  min-height:100vh;position:relative;
+  display:flex;align-items:center;
+  overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 50%, rgba(201,168,76,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,.04) 0%, transparent 60%),
+    linear-gradient(160deg, var(--dark) 0%, var(--dark2) 50%, #0a0e14 100%);
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(201,168,76,.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,.04) 1px, transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse 80% 80% at 60% 40%, black 30%, transparent 80%);
+}
+.hero-orb{
+  position:absolute;width:600px;height:600px;
+  right:-100px;top:50%;transform:translateY(-50%);
+  background:radial-gradient(circle, rgba(201,168,76,.08) 0%, transparent 70%);
+  border-radius:50%;
+  animation:pulse 6s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{transform:translateY(-50%) scale(1)}50%{transform:translateY(-50%) scale(1.08)}}
+.hero-content{
+  position:relative;z-index:2;
+  max-width:1200px;margin:0 auto;padding:8rem 3rem 5rem;
+  width:100%;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.75rem;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+  padding:.4rem 1rem;border-radius:2px;
+  font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:2rem;
+  animation:fadeUp .8s ease both;
+}
+.hero-eyebrow span{width:20px;height:1px;background:var(--gold);display:block}
+h1.hero-title{
+  font-family:var(--font-display);
+  font-size:clamp(3rem,7vw,7rem);
+  font-weight:700;line-height:1.05;
+  color:var(--white);
+  margin-bottom:1rem;
+  animation:fadeUp .8s .15s ease both;
+}
+h1.hero-title em{color:var(--gold);font-style:italic}
+.hero-mm{
+  font-family:var(--font-mm);
+  font-size:clamp(1rem,2vw,1.4rem);
+  color:var(--text-dim);
+  margin-bottom:2.5rem;
+  animation:fadeUp .8s .25s ease both;
+  letter-spacing:.02em;
+}
+.hero-desc{
+  font-size:1.05rem;color:var(--text-dim);
+  max-width:520px;line-height:1.8;
+  margin-bottom:3rem;
+  animation:fadeUp .8s .35s ease both;
+}
+.hero-btns{
+  display:flex;gap:1rem;flex-wrap:wrap;
+  animation:fadeUp .8s .45s ease both;
+}
+.btn-primary{
+  background:var(--gold);color:var(--dark);
+  padding:.9rem 2.5rem;border-radius:2px;
+  font-weight:600;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;
+  text-decoration:none;border:none;cursor:none;
+  transition:all .25s ease;display:inline-block;
+  position:relative;overflow:hidden;
+}
+.btn-primary::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(255,255,255,.15),transparent);
+  opacity:0;transition:opacity .25s;
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(201,168,76,.35)}
+.btn-primary:hover::before{opacity:1}
+.btn-outline{
+  border:1px solid rgba(201,168,76,.4);color:var(--gold);
+  padding:.9rem 2.5rem;border-radius:2px;
+  font-weight:500;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;
+  text-decoration:none;cursor:none;
+  transition:all .25s ease;display:inline-block;
+  background:transparent;
+}
+.btn-outline:hover{background:rgba(201,168,76,.08);border-color:var(--gold);transform:translateY(-2px)}
+.hero-stats{
+  display:flex;gap:3rem;margin-top:4rem;padding-top:3rem;
+  border-top:1px solid rgba(201,168,76,.1);
+  animation:fadeUp .8s .55s ease both;flex-wrap:wrap;
+}
+.stat-item{}
+.stat-num{
+  font-family:var(--font-display);font-size:2.5rem;font-weight:700;
+  color:var(--gold);line-height:1;
+}
+.stat-label{font-size:.78rem;color:var(--text-dim);letter-spacing:.08em;text-transform:uppercase;margin-top:.3rem}
+
+/* Hero ball graphic */
+.hero-visual{
+  position:absolute;right:5%;top:50%;transform:translateY(-50%);
+  width:420px;height:420px;
+  display:flex;align-items:center;justify-content:center;
+  animation:floatBall 8s ease-in-out infinite;
+}
+@keyframes floatBall{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 20px))}}
+.ball-ring{
+  position:absolute;border-radius:50%;border:1px solid rgba(201,168,76,.15);
+  animation:ringPulse 4s ease-in-out infinite;
+}
+.ball-ring:nth-child(1){width:420px;height:420px;animation-delay:0s}
+.ball-ring:nth-child(2){width:320px;height:320px;animation-delay:.5s}
+.ball-ring:nth-child(3){width:220px;height:220px;animation-delay:1s}
+@keyframes ringPulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.ball-emoji{font-size:6rem;position:relative;z-index:2;filter:drop-shadow(0 0 40px rgba(201,168,76,.4))}
+
+/* ─── SECTION SHARED ─────────────────────────────────── */
+.section{padding:7rem 3rem;max-width:1200px;margin:0 auto}
+.section-full{padding:7rem 3rem;width:100%}
+.section-label{
+  display:inline-flex;align-items:center;gap:.75rem;
+  font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;margin-bottom:1.25rem;
+}
+.section-label::before{content:'';width:30px;height:1px;background:var(--gold)}
+h2.section-title{
+  font-family:var(--font-display);
+  font-size:clamp(2rem,4vw,3.5rem);
+  font-weight:700;line-height:1.15;
+  color:var(--white);margin-bottom:1rem;
+}
+h2.section-title em{color:var(--gold);font-style:italic}
+.section-sub{color:var(--text-dim);font-size:1rem;line-height:1.8;max-width:540px}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.2),transparent);margin:0}
+
+/* ─── FEATURES STRIP ─────────────────────────────────── */
+.features-strip{
+  background:var(--dark2);
+  border-top:1px solid rgba(201,168,76,.08);
+  border-bottom:1px solid rgba(201,168,76,.08);
+  padding:3rem;overflow:hidden;
+}
+.strip-inner{
+  display:flex;gap:5rem;
+  animation:scrollStrip 25s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+@keyframes scrollStrip{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.strip-item{
+  display:flex;align-items:center;gap:.75rem;
+  font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--text-dim);font-weight:500;flex-shrink:0;
+}
+.strip-item span{color:var(--gold);font-size:1rem}
+
+/* ─── TIPS PAGE ──────────────────────────────────────── */
+.tips-hero{
+  background:var(--dark2);
+  border-bottom:1px solid rgba(201,168,76,.1);
+  padding:10rem 3rem 4rem;text-align:center;
+}
+.tips-filter{
+  max-width:1200px;margin:0 auto;
+  display:flex;gap:.75rem;justify-content:center;
+  margin-top:2.5rem;flex-wrap:wrap;
+}
+.filter-btn{
+  background:transparent;border:1px solid rgba(201,168,76,.2);
+  color:var(--text-dim);padding:.45rem 1.25rem;
+  border-radius:2px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;
+  cursor:none;transition:all .2s;font-family:var(--font-body);font-weight:500;
+}
+.filter-btn.active,.filter-btn:hover{
+  background:var(--gold);color:var(--dark);border-color:var(--gold);
+}
+.tips-grid{
+  max-width:1200px;margin:0 auto;padding:4rem 3rem;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.5rem;
+}
+.tip-card{
+  background:var(--dark2);
+  border:1px solid rgba(201,168,76,.1);
+  border-radius:4px;overflow:hidden;
+  transition:all .3s ease;position:relative;
+}
+.tip-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s ease;
+}
+.tip-card:hover{transform:translateY(-4px);border-color:rgba(201,168,76,.3);box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.tip-card:hover::before{transform:scaleX(1)}
+.tip-card-header{
+  padding:1.25rem 1.5rem;
+  border-bottom:1px solid rgba(201,168,76,.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tip-league{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.tip-time{font-size:.78rem;color:var(--text-muted)}
+.tip-card-body{padding:1.5rem}
+.tip-teams{
+  font-family:var(--font-display);font-size:1.4rem;font-weight:700;
+  color:var(--white);line-height:1.3;margin-bottom:1rem;
+}
+.tip-vs{color:var(--gold);font-style:italic;margin:0 .4rem}
+.tip-pick{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+  padding:.35rem .9rem;border-radius:2px;
+  font-size:.8rem;letter-spacing:.06em;color:var(--gold);font-weight:600;
+  text-transform:uppercase;margin-bottom:1rem;
+}
+.tip-analysis{font-size:.88rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.25rem}
+.tip-card-footer{
+  padding:1rem 1.5rem;
+  border-top:1px solid rgba(201,168,76,.06);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.tip-odds{
+  font-family:var(--font-display);font-size:1.6rem;font-weight:700;color:var(--gold);
+}
+.tip-odds-label{font-size:.7rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+.tip-result{
+  font-size:.78rem;font-weight:600;padding:.3rem .8rem;border-radius:2px;letter-spacing:.06em;
+}
+.result-win{background:rgba(29,185,84,.12);color:var(--green)}
+.result-pending{background:rgba(201,168,76,.08);color:var(--gold)}
+.tip-locked{
+  filter:blur(4px);pointer-events:none;user-select:none;
+}
+.tip-unlock-overlay{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:.75rem;
+  background:rgba(8,12,16,.7);backdrop-filter:blur(2px);
+  z-index:5;
+}
+.unlock-icon{font-size:2rem}
+.unlock-text{font-size:.85rem;color:var(--text-dim);text-align:center}
+.btn-unlock{
+  background:var(--gold);color:var(--dark);
+  border:none;padding:.55rem 1.5rem;border-radius:2px;
+  font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;
+  cursor:none;transition:all .2s;
+}
+.btn-unlock:hover{background:var(--gold-light)}
+
+/* ─── FREE BADGE ─────────────────────────────────────── */
+.badge-free{
+  background:rgba(29,185,84,.1);color:var(--green);
+  border:1px solid rgba(29,185,84,.25);
+  font-size:.7rem;padding:.2rem .6rem;border-radius:2px;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+}
+.badge-vip{
+  background:rgba(201,168,76,.1);color:var(--gold);
+  border:1px solid rgba(201,168,76,.25);
+  font-size:.7rem;padding:.2rem .6rem;border-radius:2px;
+  letter-spacing:.06em;text-transform:uppercase;font-weight:700;
+}
+
+/* ─── ABOUT PAGE ─────────────────────────────────────── */
+.about-hero{
+  padding:10rem 3rem 5rem;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 50%,rgba(201,168,76,.05) 0%,transparent 70%),
+    var(--dark2);
+  border-bottom:1px solid rgba(201,168,76,.08);
+}
+.about-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:center;
+}
+.about-visual{position:relative}
+.about-card-main{
+  background:var(--dark3);border:1px solid rgba(201,168,76,.15);
+  border-radius:4px;padding:2.5rem;position:relative;overflow:hidden;
+}
+.about-card-main::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--gold),var(--gold-light),var(--gold));
+}
+.about-avatar{
+  width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin-bottom:1.5rem;
+}
+.about-name{
+  font-family:var(--font-display);font-size:1.5rem;font-weight:700;
+  color:var(--white);margin-bottom:.25rem;
+}
+.about-role{font-size:.82rem;color:var(--gold);letter-spacing:.08em;text-transform:uppercase}
+.about-stats-mini{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.5rem;
+  padding-top:1.5rem;border-top:1px solid rgba(201,168,76,.08);
+}
+.mini-stat-num{font-family:var(--font-display);font-size:1.8rem;color:var(--gold);font-weight:700}
+.mini-stat-label{font-size:.75rem;color:var(--text-muted);text-transform:uppercase;letter-spacing:.06em}
+.about-float-card{
+  position:absolute;bottom:-2rem;right:-2rem;
+  background:var(--dark);border:1px solid rgba(201,168,76,.2);
+  border-radius:4px;padding:1rem 1.5rem;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.float-num{font-family:var(--font-display);font-size:2rem;color:var(--gold);font-weight:700}
+.float-label{font-size:.75rem;color:var(--text-dim);text-transform:uppercase;letter-spacing:.06em}
+.about-text h2{margin-bottom:1.5rem}
+.about-text p{color:var(--text-dim);line-height:1.9;margin-bottom:1.25rem}
+.about-mm-text{
+  font-family:var(--font-mm);
+  background:rgba(201,168,76,.05);border-left:2px solid var(--gold);
+  padding:1rem 1.5rem;border-radius:0 4px 4px 0;
+  color:var(--text-dim);font-size:.95rem;line-height:1.9;
+  margin-bottom:1.5rem;
+}
+.values-grid{
+  max-width:1200px;margin:0 auto;padding:5rem 3rem;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+}
+.value-card{
+  background:var(--dark2);border:1px solid rgba(201,168,76,.08);
+  border-radius:4px;padding:2rem;
+  transition:all .3s;
+}
+.value-card:hover{border-color:rgba(201,168,76,.25);transform:translateY(-3px)}
+.value-icon{font-size:2rem;margin-bottom:1rem}
+.value-title{font-family:var(--font-display);font-size:1.2rem;font-weight:700;color:var(--white);margin-bottom:.5rem}
+.value-desc{font-size:.88rem;color:var(--text-dim);line-height:1.7}
+
+/* ─── CONTACT PAGE ───────────────────────────────────── */
+.contact-hero{
+  padding:10rem 3rem 5rem;text-align:center;
+  background:var(--dark2);border-bottom:1px solid rgba(201,168,76,.08);
+}
+.contact-grid{
+  max-width:1000px;margin:0 auto;padding:5rem 3rem;
+  display:grid;grid-template-columns:1fr 1.4fr;gap:4rem;
+}
+.contact-info{}
+.contact-item{
+  display:flex;gap:1rem;margin-bottom:2rem;align-items:flex-start;
+}
+.contact-icon{
+  width:44px;height:44px;border-radius:2px;
+  background:rgba(201,168,76,.08);border:1px solid rgba(201,168,76,.2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.1rem;flex-shrink:0;
+}
+.contact-detail-label{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.25rem}
+.contact-detail-val{color:var(--text);font-size:.95rem}
+.contact-detail-val a{color:var(--gold);text-decoration:none}
+.contact-social{display:flex;gap:.75rem;margin-top:2.5rem}
+.social-btn{
+  width:44px;height:44px;
+  background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);
+  border-radius:2px;display:flex;align-items:center;justify-content:center;
+  text-decoration:none;font-size:1.1rem;
+  transition:all .25s;cursor:none;
+}
+.social-btn:hover{background:var(--gold);transform:translateY(-2px)}
+.contact-form{background:var(--dark2);border:1px solid rgba(201,168,76,.1);border-radius:4px;padding:2.5rem;position:relative;overflow:hidden}
+.contact-form::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold-light))}
+.form-group{margin-bottom:1.25rem}
+.form-group label{display:block;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:.5rem}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;background:var(--dark3);
+  border:1px solid rgba(201,168,76,.12);border-radius:2px;
+  color:var(--text);padding:.8rem 1rem;font-size:.9rem;
+  font-family:var(--font-body);outline:none;
+  transition:border-color .2s;
+}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold)}
+.form-group textarea{resize:vertical;min-height:100px}
+.form-group select{cursor:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23c9a84c' d='M6 8L0 0h12z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-submit{
+  width:100%;background:var(--gold);color:var(--dark);
+  border:none;padding:1rem;border-radius:2px;
+  font-weight:700;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;
+  cursor:none;transition:all .25s;font-family:var(--font-body);
+  margin-top:.5rem;
+}
+.form-submit:hover{background:var(--gold-light);transform:translateY(-1px)}
+.form-success{
+  display:none;text-align:center;padding:2rem;
+}
+.form-success .success-icon{font-size:3rem;margin-bottom:1rem}
+.form-success h3{font-family:var(--font-display);font-size:1.5rem;color:var(--white);margin-bottom:.5rem}
+.form-success p{color:var(--text-dim);font-size:.9rem}
+
+/* ─── FOOTER ─────────────────────────────────────────── */
+footer{
+  background:var(--dark2);
+  border-top:1px solid rgba(201,168,76,.1);
+  padding:4rem 3rem 2rem;
+}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+.footer-brand .nav-logo{display:inline-block;margin-bottom:1rem;font-size:1.4rem}
+.footer-brand p{font-size:.85rem;color:var(--text-muted);line-height:1.8;max-width:260px}
+.footer-brand .footer-mm{font-family:var(--font-mm);font-size:.85rem;color:var(--text-muted);margin-top:.5rem}
+.footer-col h4{font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.25rem}
+.footer-col ul{list-style:none}
+.footer-col ul li{margin-bottom:.6rem}
+.footer-col ul li a{color:var(--text-muted);font-size:.85rem;text-decoration:none;transition:color .2s;cursor:none}
+.footer-col ul li a:hover{color:var(--gold)}
+.footer-bottom{
+  padding-top:2rem;border-top:1px solid rgba(201,168,76,.08);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.footer-bottom p{font-size:.78rem;color:var(--text-muted)}
+.footer-bottom span{color:var(--gold)}
+.footer-disclaimer{font-size:.73rem;color:var(--text-muted);max-width:600px;line-height:1.6;margin-top:.5rem}
+
+/* ─── TESTIMONIALS ───────────────────────────────────── */
+.testi-section{background:var(--dark2);padding:7rem 3rem;border-top:1px solid rgba(201,168,76,.08)}
+.testi-grid{
+  max-width:1200px;margin:2.5rem auto 0;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;
+}
+.testi-card{
+  background:var(--dark3);border:1px solid rgba(201,168,76,.08);
+  border-radius:4px;padding:2rem;position:relative;
+}
+.testi-quote{
+  font-family:var(--font-display);font-size:3rem;color:rgba(201,168,76,.2);
+  line-height:1;margin-bottom:.5rem;
+}
+.testi-text{font-size:.9rem;color:var(--text-dim);line-height:1.8;margin-bottom:1.5rem}
+.testi-text .mm{font-family:var(--font-mm);font-size:.88rem}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.testi-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),var(--gold-light));
+  display:flex;align-items:center;justify-content:center;font-size:1rem;
+}
+.testi-name{font-size:.9rem;font-weight:600;color:var(--white)}
+.testi-loc{font-size:.75rem;color:var(--text-muted)}
+.testi-stars{color:var(--gold);font-size:.85rem;letter-spacing:.1em;margin-top:.75rem}
+
+/* ─── PRICING STRIP ──────────────────────────────────── */
+.pricing-section{padding:7rem 3rem;max-width:1200px;margin:0 auto}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem}
+.pricing-card{
+  background:var(--dark2);border:1px solid rgba(201,168,76,.1);
+  border-radius:4px;padding:2.5rem;position:relative;overflow:hidden;
+  transition:all .3s;
+}
+.pricing-card.featured{
+  border-color:var(--gold);
+  background:linear-gradient(160deg,var(--dark3),var(--dark2));
+}
+.pricing-card.featured::before{
+  content:'MOST POPULAR';
+  position:absolute;top:1.25rem;right:-2.5rem;
+  background:var(--gold);color:var(--dark);
+  font-size:.65rem;font-weight:700;letter-spacing:.1em;
+  padding:.3rem 3rem;transform:rotate(30deg);
+}
+.pricing-card:hover:not(.featured){transform:translateY(-4px);border-color:rgba(201,168,76,.3)}
+.plan-name{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:.75rem}
+.plan-price{font-family:var(--font-display);font-size:3rem;font-weight:700;color:var(--white);line-height:1}
+.plan-price span{font-size:1rem;color:var(--text-muted);font-family:var(--font-body);font-weight:400}
+.plan-period{font-size:.82rem;color:var(--text-muted);margin-bottom:1.5rem}
+.plan-features{list-style:none;margin-bottom:2rem}
+.plan-features li{
+  font-size:.88rem;color:var(--text-dim);padding:.5rem 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+  display:flex;align-items:center;gap:.6rem;
+}
+.plan-features li::before{content:'✓';color:var(--gold);font-weight:700;font-size:.85rem}
+.plan-features li.no::before{content:'✗';color:var(--text-muted)}
+.plan-features li.no{color:var(--text-muted)}
+.btn-plan{
+  width:100%;padding:.85rem;border-radius:2px;
+  font-weight:700;font-size:.85rem;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--gold);cursor:none;transition:all .25s;
+  font-family:var(--font-body);
+}
+.btn-plan.outline{background:transparent;color:var(--gold)}
+.btn-plan.outline:hover{background:rgba(201,168,76,.1)}
+.btn-plan.filled{background:var(--gold);color:var(--dark);border-color:var(--gold)}
+.btn-plan.filled:hover{background:var(--gold-light)}
+
+/* ─── ANIMATIONS ─────────────────────────────────────── */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.reveal{opacity:0;transform:translateY(30px);transition:all .7s cubic-bezier(.25,.46,.45,.94)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+
+/* ─── RESPONSIVE ─────────────────────────────────────── */
+@media(max-width:1024px){
+  .hero-visual{display:none}
+  .about-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .pricing-card.featured::before{display:none}
+}
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  nav.scrolled{padding:.75rem 1.5rem}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-content{padding:7rem 1.5rem 4rem}
+  .hero-stats{gap:2rem}
+  .section{padding:5rem 1.5rem}
+  .section-full{padding:5rem 1.5rem}
+  .tips-hero{padding:8rem 1.5rem 3rem}
+  .tips-grid{padding:3rem 1.5rem;grid-template-columns:1fr}
+  .about-hero{padding:8rem 1.5rem 3rem}
+  .values-grid{padding:3rem 1.5rem;grid-template-columns:1fr}
+  .testi-section{padding:5rem 1.5rem}
+  .testi-grid{grid-template-columns:1fr}
+  .contact-hero{padding:8rem 1.5rem 3rem}
+  .contact-grid{grid-template-columns:1fr;padding:3rem 1.5rem;gap:2.5rem}
+  .pricing-section{padding:5rem 1.5rem}
+  footer{padding:3rem 1.5rem 1.5rem}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .form-row{grid-template-columns:1fr}
+  .about-float-card{position:static;margin-top:1rem;display:inline-block}
+  .hero-btns{flex-direction:column;align-items:flex-start}
+}
+
+/* ─── TELEGRAM FLOATING BTN ──────────────────────────── */
+.tg-float{
+  position:fixed;bottom:2rem;right:2rem;z-index:500;
+  width:56px;height:56px;border-radius:50%;
+  background:linear-gradient(135deg,#229ED9,#1a7bbf);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;box-shadow:0 8px 30px rgba(34,158,217,.35);
+  text-decoration:none;cursor:none;
+  transition:all .25s;animation:tgPulse 3s ease-in-out infinite;
+}
+.tg-float:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(34,158,217,.5)}
+@keyframes tgPulse{0%,100%{box-shadow:0 8px 30px rgba(34,158,217,.35)}50%{box-shadow:0 8px 40px rgba(34,158,217,.6)}}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- TELEGRAM FLOATING BUTTON -->
+<a href="https://t.me/MMTipShop" target="_blank" class="tg-float" title="Join Telegram">✈</a>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="navigate('home');closeMobile()">Home</a>
+  <a href="#" onclick="navigate('tips');closeMobile()">Tips</a>
+  <a href="#" onclick="navigate('about');closeMobile()">About</a>
+  <a href="#" onclick="navigate('contact');closeMobile()">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo" onclick="navigate('home')">MM<span>Tip</span>.Shop</a>
+  <ul class="nav-links">
+    <li><a href="#" onclick="navigate('home')">Home</a></li>
+    <li><a href="#" onclick="navigate('tips')">Tips</a></li>
+    <li><a href="#" onclick="navigate('about')">About</a></li>
+    <li><a href="#" onclick="navigate('contact')" class="nav-cta">Get Tips</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" onclick="toggleMobile()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- HOME PAGE                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-orb"></div>
+
+    <div class="hero-content">
+      <div class="hero-eyebrow">
+        <span></span> Myanmar's #1 Premium Football Tips
+      </div>
+      <h1 class="hero-title">
+        Win More.<br><em>Bet Smarter.</em><br>Every Day.
+      </h1>
+      <p class="hero-mm">Expert ကျွမ်းကျင်သော ဘောလုံး ခန့်မှန်းချက်များ 🇲🇲</p>
+      <p class="hero-desc">
+        Expert-curated football predictions for the biggest leagues. Free daily tips plus VIP premium analysis — trusted by thousands across Myanmar.
+      </p>
+      <div class="hero-btns">
+        <a href="#" class="btn-primary" onclick="navigate('tips')">View Today's Tips →</a>
+        <a href="#" class="btn-outline" onclick="navigate('contact')">Join Telegram</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-num">87%</div>
+          <div class="stat-label">Win Rate</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">5K+</div>
+          <div class="stat-label">Members</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">3yr</div>
+          <div class="stat-label">Experience</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">Daily</div>
+          <div class="stat-label">Updates</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="ball-ring"></div>
+      <div class="ball-ring"></div>
+      <div class="ball-ring"></div>
+      <div class="ball-emoji">⚽</div>
+    </div>
+  </section>
+
+  <!-- STRIP -->
+  <div class="features-strip">
+    <div class="strip-inner">
+      <div class="strip-item"><span>⚽</span> Premier League</div>
+      <div class="strip-item"><span>🏆</span> Champions League</div>
+      <div class="strip-item"><span>🌟</span> La Liga</div>
+      <div class="strip-item"><span>🔥</span> Serie A</div>
+      <div class="strip-item"><span>💎</span> Bundesliga</div>
+      <div class="strip-item"><span>📊</span> Daily Analysis</div>
+      <div class="strip-item"><span>✅</span> Verified Tipster</div>
+      <div class="strip-item"><span>🇲🇲</span> Myanmar Trusted</div>
+      <!-- Duplicate for seamless loop -->
+      <div class="strip-item"><span>⚽</span> Premier League</div>
+      <div class="strip-item"><span>🏆</span> Champions League</div>
+      <div class="strip-item"><span>🌟</span> La Liga</div>
+      <div class="strip-item"><span>🔥</span> Serie A</div>
+      <div class="strip-item"><span>💎</span> Bundesliga</div>
+      <div class="strip-item"><span>📊</span> Daily Analysis</div>
+      <div class="strip-item"><span>✅</span> Verified Tipster</div>
+      <div class="strip-item"><span>🇲🇲</span> Myanmar Trusted</div>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="section reveal">
+    <div style="text-align:center;margin-bottom:4rem">
+      <div class="section-label">Why MMTip.Shop</div>
+      <h2 class="section-title">Built for <em>Winners</em></h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem">
+      <div class="value-card">
+        <div class="value-icon">📈</div>
+        <div class="value-title">Data-Driven</div>
+        <div class="value-desc">Every tip backed by deep statistical analysis, team form, and head-to-head records.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">⚡</div>
+        <div class="value-title">Real-Time Updates</div>
+        <div class="value-desc">Line-up news, injury updates, and weather — all factored in before kick-off.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🇲🇲</div>
+        <div class="value-title">Myanmar Focus</div>
+        <div class="value-desc">မြန်မာဘာသာဖြင့် မှတ်ချက်များ။ Tips explained in both English and Myanmar language.</div>
+      </div>
+      <div class="value-card">
+        <div class="value-icon">🔒</div>
+        <div class="value-title">Transparent Results</div>
+        <div class="value-desc">All past tips published publicly. No hidden losses. Full record transparency.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- TESTIMONIALS -->
+  <div class="testi-section reveal">
+    <div style="max-width:1200px;margin:0 auto">
+      <div class="section-label">Member Reviews</div>
+      <h2 class="section-title">What Members <em>Say</em></h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <div class="testi-text">MMTip ကနေ နေ့တိုင်း tip တွေ ရပြီး ဒီလမှာ profit တက်ခဲ့တယ်။ <span class="mm">အရမ်းကောင်းတဲ့ service ပါ</span></div>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">🧑</div>
+          <div>
+            <div class="testi-name">Kyaw Zin</div>
+            <div class="testi-loc">Yangon, Myanmar</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <div class="testi-text">Best tipster I've followed. 87% win rate is real — I've tracked every single tip for 6 months now. Unmatched.</div>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">👨</div>
+          <div>
+            <div class="testi-name">Aung Thu</div>
+            <div class="testi-loc">Mandalay, Myanmar</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-quote">"</div>
+        <div class="testi-text">VIP membership is 100% worth it. The analysis is incredibly detailed and the Telegram updates are instant. Love it.</div>
+        <div class="testi-stars">★★★★★</div>
+        <div class="testi-author">
+          <div class="testi-avatar">👩</div>
+          <div>
+            <div class="testi-name">Su Myat</div>
+            <div class="testi-loc">Naypyidaw, Myanmar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="pricing-section reveal">
+    <div class="section-label">Membership Plans</div>
+    <h2 class="section-title">Simple <em>Pricing</em></h2>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-price">$0 <span>/ month</span></div>
+        <div class="plan-period">Forever free</div>
+        <ul class="plan-features">
+          <li>1 Free Tip Daily</li>
+          <li>Telegram Channel Access</li>
+          <li class="no">VIP Premium Tips</li>
+          <li class="no">In-depth Analysis</li>
+          <li class="no">Priority Support</li>
+        </ul>
+        <button class="btn-plan outline" onclick="navigate('tips')">Start Free</button>
+      </div>
+      <div class="pricing-card featured">
+        <div class="plan-name">VIP Monthly</div>
+        <div class="plan-price">15K <span>MMK / month</span></div>
+        <div class="plan-period">Billed monthly</div>
+        <ul class="plan-features">
+          <li>All Free Tips</li>
+          <li>5+ VIP Tips Daily</li>
+          <li>Full Match Analysis</li>
+          <li>Telegram VIP Group</li>
+          <li>Priority Support</li>
+        </ul>
+        <button class="btn-plan filled" onclick="navigate('contact')">Join VIP</button>
+      </div>
+      <div class="pricing-card">
+        <div class="plan-name">VIP Weekly</div>
+        <div class="plan-price">5K <span>MMK / week</span></div>
+        <div class="plan-period">Try before you commit</div>
+        <ul class="plan-features">
+          <li>All Free Tips</li>
+          <li>5+ VIP Tips Daily</li>
+          <li>Full Match Analysis</li>
+          <li>Telegram VIP Group</li>
+          <li class="no">Priority Support</li>
+        </ul>
+        <button class="btn-plan outline" onclick="navigate('contact')">Get Weekly</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /home -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- TIPS PAGE                                       -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="page" id="page-tips">
+  <div class="tips-hero">
+    <div class="section-label" style="justify-content:center">Today's Tips</div>
+    <h2 class="section-title" style="text-align:center">Match <em>Predictions</em></h2>
+    <p style="color:var(--text-dim);max-width:500px;margin:.75rem auto 0;font-size:.95rem;text-align:center">
+      Expert analysis for today's fixtures. Free tips for everyone — VIP tips for members.
+    </p>
+    <div class="tips-filter">
+      <button class="filter-btn active" onclick="filterTips('all',this)">All Matches</button>
+      <button class="filter-btn" onclick="filterTips('free',this)">Free Tips</button>
+      <button class="filter-btn" onclick="filterTips('vip',this)">VIP Tips</button>
+      <button class="filter-btn" onclick="filterTips('premier',this)">Premier League</button>
+      <button class="filter-btn" onclick="filterTips('champions',this)">Champions League</button>
+    </div>
+  </div>
+
+  <div class="tips-grid" id="tipsGrid">
+    <!-- FREE TIP 1 -->
+    <div class="tip-card" data-type="free" data-league="premier">
+      <div class="tip-card-header">
+        <span class="tip-league">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
+        <span class="badge-free">FREE</span>
+      </div>
+      <div class="tip-card-body">
+        <div class="tip-teams">Arsenal <span class="tip-vs">vs</span> Chelsea</div>
+        <div class="tip-pick">⚽ Arsenal Win or Draw</div>
+        <div class="tip-analysis">Arsenal are unbeaten in 9 home games. Chelsea's away form has been poor — 2W 5D 3L in last 10. Home advantage is decisive here.</div>
+      </div>
+      <div class="tip-card-footer">
+        <div>
+          <div class="tip-odds">1.75</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-pending">PENDING</span>
+      </div>
+    </div>
+
+    <!-- FREE TIP 2 -->
+    <div class="tip-card" data-type="free" data-league="champions">
+      <div class="tip-card-header">
+        <span class="tip-league">🏆 Champions League</span>
+        <span class="badge-free">FREE</span>
+      </div>
+      <div class="tip-card-body">
+        <div class="tip-teams">Real Madrid <span class="tip-vs">vs</span> Bayern</div>
+        <div class="tip-pick">🎯 Both Teams to Score</div>
+        <div class="tip-analysis">Both sides have lethal attacks and have scored in 8 of their last 10 European ties. BTTS lands at 78% probability.</div>
+      </div>
+      <div class="tip-card-footer">
+        <div>
+          <div class="tip-odds">1.65</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-win">WIN ✓</span>
+      </div>
+    </div>
+
+    <!-- VIP TIP 1 -->
+    <div class="tip-card" data-type="vip" data-league="premier" style="position:relative">
+      <div class="tip-card-header">
+        <span class="tip-league">🏴󠁧󠁢󠁥󠁮󠁧󠁿 Premier League</span>
+        <span class="badge-vip">VIP</span>
+      </div>
+      <div class="tip-card-body tip-locked">
+        <div class="tip-teams">Man City <span class="tip-vs">vs</span> Liverpool</div>
+        <div class="tip-pick">🔥 Asian Handicap -0.5</div>
+        <div class="tip-analysis">Deep statistical edge spotted in this fixture. Expected goals model shows 73% probability for our selection.</div>
+      </div>
+      <div class="tip-card-footer tip-locked">
+        <div>
+          <div class="tip-odds">2.10</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-pending">PENDING</span>
+      </div>
+      <div class="tip-unlock-overlay">
+        <div class="unlock-icon">🔒</div>
+        <div class="unlock-text">VIP Members Only<br><small>VIP ဝင်ငွေနဲ့ ဖွင့်ကြည့်ပါ</small></div>
+        <button class="btn-unlock" onclick="navigate('contact')">Get VIP Access</button>
+      </div>
+    </div>
+
+    <!-- VIP TIP 2 -->
+    <div class="tip-card" data-type="vip" data-league="champions" style="position:relative">
+      <div class="tip-card-header">
+        <span class="tip-league">🏆 Champions League</span>
+        <span class="badge-vip">VIP</span>
+      </div>
+      <div class="tip-card-body tip-locked">
+        <div class="tip-teams">PSG <span class="tip-vs">vs</span> Inter Milan</div>
+        <div class="tip-pick">📊 Over 2.5 Goals + BTTS</div>
+        <div class="tip-analysis">Combo bet with 2.10 odds. Both defenses have leaked goals in Europe this season. High confidence pick.</div>
+      </div>
+      <div class="tip-card-footer tip-locked">
+        <div>
+          <div class="tip-odds">2.85</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-pending">PENDING</span>
+      </div>
+      <div class="tip-unlock-overlay">
+        <div class="unlock-icon">🔒</div>
+        <div class="unlock-text">VIP Members Only<br><small>VIP ဝင်ငွေနဲ့ ဖွင့်ကြည့်ပါ</small></div>
+        <button class="btn-unlock" onclick="navigate('contact')">Get VIP Access</button>
+      </div>
+    </div>
+
+    <!-- FREE TIP 3 -->
+    <div class="tip-card" data-type="free" data-league="other">
+      <div class="tip-card-header">
+        <span class="tip-league">🌟 La Liga</span>
+        <span class="badge-free">FREE</span>
+      </div>
+      <div class="tip-card-body">
+        <div class="tip-teams">Barcelona <span class="tip-vs">vs</span> Atletico</div>
+        <div class="tip-pick">🎯 Over 1.5 Goals</div>
+        <div class="tip-analysis">These two sides have gone over 1.5 goals in 9 of their last 10 meetings. Extremely safe play at 1.25.</div>
+      </div>
+      <div class="tip-card-footer">
+        <div>
+          <div class="tip-odds">1.25</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-win">WIN ✓</span>
+      </div>
+    </div>
+
+    <!-- VIP TIP 3 -->
+    <div class="tip-card" data-type="vip" data-league="other" style="position:relative">
+      <div class="tip-card-header">
+        <span class="tip-league">🔥 Serie A</span>
+        <span class="badge-vip">VIP</span>
+      </div>
+      <div class="tip-card-body tip-locked">
+        <div class="tip-teams">AC Milan <span class="tip-vs">vs</span> Juventus</div>
+        <div class="tip-pick">💎 Correct Score 2-1</div>
+        <div class="tip-analysis">Premium model predicts this exact score with high conviction. Rare correct score pick with excellent value.</div>
+      </div>
+      <div class="tip-card-footer tip-locked">
+        <div>
+          <div class="tip-odds">7.50</div>
+          <div class="tip-odds-label">Best Odds</div>
+        </div>
+        <span class="tip-result result-pending">PENDING</span>
+      </div>
+      <div class="tip-unlock-overlay">
+        <div class="unlock-icon">🔒</div>
+        <div class="unlock-text">VIP Members Only<br><small>VIP ဝင်ငွေနဲ့ ဖွင့်ကြည့်ပါ</small></div>
+        <button class="btn-unlock" onclick="navigate('contact')">Get VIP Access</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /tips -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- ABOUT PAGE                                      -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-grid">
+      <div class="about-text">
+        <div class="section-label">About Us</div>
+        <h2 class="section-title">Myanmar's Most <em>Trusted</em> Tipster</h2>
+        <div class="about-mm-text">
+          MMTip.Shop သည် မြန်မာနိုင်ငံတွင် ယုံကြည်ရဆုံးသော football tips ဝန်ဆောင်မှုဖြစ်သည်။ ကျွမ်းကျင်သောသူများမှ နေ့တိုင်း ခွဲခြမ်းစိတ်ဖြာ ပေးပို့သော ခန့်မှန်းချက်များ ရရှိမည်ဖြစ်သည်။
+        </div>
+        <p>Founded in 2022, MMTip.Shop was built with one goal: to give Myanmar football fans access to the same quality of expert analysis that professional bettors use worldwide.</p>
+        <p>Our team of analysts studies thousands of data points — team form, player statistics, tactical patterns, weather, referee tendencies — to deliver predictions you can trust.</p>
+        <a href="#" class="btn-primary" style="margin-top:1rem" onclick="navigate('tips')">See Our Tips →</a>
+      </div>
+      <div class="about-visual">
+        <div class="about-card-main">
+          <div class="about-avatar">🎯</div>
+          <div class="about-name">MM Tip Analyst</div>
+          <div class="about-role">Head Analyst & Founder</div>
+          <div class="about-stats-mini">
+            <div>
+              <div class="mini-stat-num">87%</div>
+              <div class="mini-stat-label">Win Rate</div>
+            </div>
+            <div>
+              <div class="mini-stat-num">3yrs</div>
+              <div class="mini-stat-label">Experience</div>
+            </div>
+            <div>
+              <div class="mini-stat-num">5,000+</div>
+              <div class="mini-stat-label">Members</div>
+            </div>
+            <div>
+              <div class="mini-stat-num">2,400+</div>
+              <div class="mini-stat-label">Tips Given</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-float-card">
+          <div class="float-num">⭐ 4.9</div>
+          <div class="float-label">Member Rating</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="values-grid">
+    <div class="value-card reveal">
+      <div class="value-icon">🔍</div>
+      <div class="value-title">Deep Research</div>
+      <div class="value-desc">Every prediction is backed by hours of match analysis, statistical modeling, and real-time data. No guesswork — only evidence.</div>
+    </div>
+    <div class="value-card reveal">
+      <div class="value-icon">🏆</div>
+      <div class="value-title">Proven Track Record</div>
+      <div class="value-desc">All results are published openly. Our 87% win rate is verified and tracked publicly for full member transparency.</div>
+    </div>
+    <div class="value-card reveal">
+      <div class="value-icon">🇲🇲</div>
+      <div class="value-title">Made for Myanmar</div>
+      <div class="value-desc">Explanations in both English and Myanmar language. Payment via local methods. Customer support in Myanmar time zone.</div>
+    </div>
+    <div class="value-card reveal">
+      <div class="value-icon">⚡</div>
+      <div class="value-title">Instant Delivery</div>
+      <div class="value-desc">Tips delivered via Telegram before kick-off. You'll never miss a pick — even with last-minute lineup changes factored in.</div>
+    </div>
+    <div class="value-card reveal">
+      <div class="value-icon">💬</div>
+      <div class="value-title">Community</div>
+      <div class="value-desc">Join thousands of members in our Telegram community. Share analysis, celebrate wins, and grow together as a group.</div>
+    </div>
+    <div class="value-card reveal">
+      <div class="value-icon">🔒</div>
+      <div class="value-title">Full Transparency</div>
+      <div class="value-desc">No cherry-picking wins. Every single tip — win, loss, or void — is recorded in our public results archive.</div>
+    </div>
+  </div>
+</div><!-- /about -->
+
+<!-- ══════════════════════════════════════════════ -->
+<!-- CONTACT PAGE                                    -->
+<!-- ══════════════════════════════════════════════ -->
+<div class="page" id="page-contact">
+  <div class="contact-hero">
+    <div class="section-label" style="justify-content:center">Get In Touch</div>
+    <h2 class="section-title" style="text-align:center">Join <em>MMTip.Shop</em></h2>
+    <p style="color:var(--text-dim);max-width:480px;margin:.75rem auto 0;font-size:.95rem;text-align:center">
+      Ready to start winning? Subscribe to VIP or send us a message. ကျွန်တော်တို့ဆက်သွယ်ပါ 🇲🇲
+    </p>
+  </div>
+
+  <div class="contact-grid">
+    <!-- INFO -->
+    <div class="contact-info">
+      <div class="section-label">Contact Info</div>
+      <h3 style="font-family:var(--font-display);font-size:1.75rem;color:var(--white);margin-bottom:2rem;font-weight:700">
+        Let's <em style="color:var(--gold)">Talk</em>
+      </h3>
+
+      <div class="contact-item">
+        <div class="contact-icon">✈</div>
+        <div>
+          <div class="contact-detail-label">Telegram</div>
+          <div class="contact-detail-val"><a href="https://t.me/MMTipShop" target="_blank">@MMTipShop</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📘</div>
+        <div>
+          <div class="contact-detail-label">Facebook</div>
+          <div class="contact-detail-val"><a href="#">MMTip.Shop</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-detail-label">Email</div>
+          <div class="contact-detail-val"><a href="mailto:contact@mmtip.shop">contact@mmtip.shop</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-detail-label">Response Time</div>
+          <div class="contact-detail-val">Within 2 hours (MMT)</div>
+        </div>
+      </div>
+
+      <div class="contact-social">
+        <a href="https://t.me/MMTipShop" target="_blank" class="social-btn" title="Telegram">✈</a>
+        <a href="#" class="social-btn" title="Facebook">f</a>
+        <a href="#" class="social-btn" title="Instagram">📷</a>
+      </div>
+
+      <div style="margin-top:2.5rem;padding:1.5rem;background:rgba(201,168,76,.05);border:1px solid rgba(201,168,76,.15);border-radius:4px">
+        <div style="font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;font-weight:600">💳 Payment Methods</div>
+        <p style="font-size:.85rem;color:var(--text-dim);line-height:1.7">
+          KBZ Pay · Wave Money · CB Pay · AYA Pay<br>
+          <span style="font-family:var(--font-mm)">ငွေပေးချေမှု နည်းလမ်းများ အထက်ပါ app များမှတဆင့် ပေးချေနိုင်သည်</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- FORM -->
+    <div class="contact-form">
+      <div id="formContent">
+        <h3 style="font-family:var(--font-display);font-size:1.4rem;color:var(--white);margin-bottom:1.5rem;font-weight:700">Subscribe / Message Us</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" placeholder="Mg Kyaw" id="fname"/>
+          </div>
+          <div class="form-group">
+            <label>Phone / Telegram</label>
+            <input type="text" placeholder="09xxxxxxxxx"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>I'm interested in</label>
+          <select>
+            <option>Free Tips Only</option>
+            <option>VIP Weekly (5,000 MMK)</option>
+            <option>VIP Monthly (15,000 MMK)</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message (Optional)</label>
+          <textarea placeholder="မေးချင်တာ ရှိရင် ဒီမှာ ရေးပါ..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Send Message → Join Now</button>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="success-icon">✅</div>
+        <h3>Message Sent!</h3>
+        <p>We'll contact you on Telegram within 2 hours.<br>
+        <span style="font-family:var(--font-mm)">မကြာမီ Telegram မှာ ဆက်သွယ်ပေးပါမည်</span></p>
+        <button class="btn-primary" style="margin-top:1.5rem" onclick="navigate('tips')">View Today's Tips</button>
+      </div>
+    </div>
+  </div>
+</div><!-- /contact -->
+
+<!-- FOOTER (shown on all pages) -->
+<footer id="siteFooter">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" onclick="navigate('home')">MM<span>Tip</span>.Shop</a>
+        <p>Myanmar's premium football tips platform. Expert predictions, transparent results, trusted by thousands.</p>
+        <p class="footer-mm">မြန်မာနိုင်ငံ၏ ယုံကြည်ရဆုံးသော ဘောလုံး tip ဝန်ဆောင်မှု 🇲🇲</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="#" onclick="navigate('home')">Home</a></li>
+          <li><a href="#" onclick="navigate('tips')">Today's Tips</a></li>
+          <li><a href="#" onclick="navigate('about')">About Us</a></li>
+          <li><a href="#" onclick="navigate('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Leagues</h4>
+        <ul>
+          <li><a href="#">Premier League</a></li>
+          <li><a href="#">Champions League</a></li>
+          <li><a href="#">La Liga</a></li>
+          <li><a href="#">Serie A</a></li>
+          <li><a href="#">Bundesliga</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="https://t.me/MMTipShop" target="_blank">Telegram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="mailto:contact@mmtip.shop">Email Us</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>
+        <p>© 2025 <span>MMTip.Shop</span>. All rights reserved.</p>
+        <p class="footer-disclaimer">⚠️ For entertainment purposes. Please bet responsibly. 18+ only. Gambling can be addictive.</p>
+      </div>
+      <p style="font-size:.78rem;color:var(--text-muted)">Made with ❤️ for Myanmar 🇲🇲</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── CURSOR ──────────────────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px'; cursor.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*.12; ry+=(my-ry)*.12;
+  ring.style.left=rx+'px'; ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.transform='translate(-50%,-50%) scale(2.5)';ring.style.transform='translate(-50%,-50%) scale(0.5)'});
+  el.addEventListener('mouseleave',()=>{cursor.style.transform='translate(-50%,-50%) scale(1)';ring.style.transform='translate(-50%,-50%) scale(1)'});
+});
+
+// ─── NAV SCROLL ──────────────────────────────────────────
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50);
+});
+
+// ─── PAGE NAVIGATION ─────────────────────────────────────
+function navigate(page){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  // Re-trigger reveals
+  setTimeout(()=>checkReveals(),100);
+}
+
+// ─── MOBILE MENU ─────────────────────────────────────────
+function toggleMobile(){
+  document.getElementById('mobileMenu').classList.toggle('open');
+}
+function closeMobile(){
+  document.getElementById('mobileMenu').classList.remove('open');
+}
+
+// ─── TIP FILTERS ─────────────────────────────────────────
+function filterTips(type,btn){
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.tip-card').forEach(card=>{
+    if(type==='all'){
+      card.style.display='';
+    } else if(type==='free'||type==='vip'){
+      card.style.display=card.dataset.type===type?'':'none';
+    } else {
+      card.style.display=card.dataset.league===type?'':'none';
+    }
+  });
+}
+
+// ─── SCROLL REVEAL ───────────────────────────────────────
+function checkReveals(){
+  document.querySelectorAll('.reveal').forEach(el=>{
+    const rect=el.getBoundingClientRect();
+    if(rect.top<window.innerHeight-80){el.classList.add('visible')}
+  });
+}
+window.addEventListener('scroll',checkReveals);
+checkReveals();
+
+// ─── CONTACT FORM ─────────────────────────────────────────
+function submitForm(){
+  const name=document.getElementById('fname').value;
+  if(!name){alert('Please enter your name');return;}
+  document.getElementById('formContent').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+</script>
+</body>
+</html>
